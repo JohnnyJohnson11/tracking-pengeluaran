@@ -8,7 +8,7 @@ class IncomeController extends Controller
 {
     public function create()
     {
-        return view('incomes.create');
+        return view('incomes.incomes-create');
     }
 
     public function store(Request $request)

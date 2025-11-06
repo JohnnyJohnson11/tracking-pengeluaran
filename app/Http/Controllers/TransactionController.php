@@ -3,12 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Income;
+use App\Models\Expense;
 
 class TransactionController extends Controller
 {
     public function index()
     {
-        return view('transaction.index');
-    }
+        $incomes = Income::all()->map(function($item) {
+            $item->jenis = 'Pemasukan';
+            return $item;
+        });
 
+        $expenses = Expense::all()->map(function($item) {
+            $item->jenis = 'Pengeluaran';
+            return $item;
+        });
+
+        $transactions = $incomes->merge($expenses)->sortByDesc('date');
+
+        return view('transaction.transaction-index', [
+            'transactions' => $transactions
+        ]);
+    }
 }
