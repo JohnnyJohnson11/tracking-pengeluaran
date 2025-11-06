@@ -22,7 +22,7 @@ class IncomeController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
 
-        $validated['user_id'] = 1;
+        $validated['user_id'] = 1; //usernya ganti
 
         Income::create($validated);
 
