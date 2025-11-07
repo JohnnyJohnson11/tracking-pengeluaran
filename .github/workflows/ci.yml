@@ -12,17 +12,14 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8
+        image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: laravel
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: laravel_test
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -ppassword"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
+          --health-cmd="mysqladmin ping --silent"
 
     steps:
       - name: Checkout repository
@@ -43,13 +40,12 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
-          # Override DB settings to use MySQL instead of SQLite
           sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
           sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
           sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env
-          sed -i 's/DB_DATABASE=.*/DB_DATABASE=laravel/' .env
+          sed -i 's/DB_DATABASE=.*/DB_DATABASE=laravel_test/' .env
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
-          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=password/' .env
+          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=root/' .env
 
       - name: Wait for MySQL to be ready
         run: |
