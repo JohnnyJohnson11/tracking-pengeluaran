@@ -44,7 +44,7 @@
                         <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                         <input type="password" name="password_confirmation" class="form-control" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Daftar</button>
+                    <button type="submit" class="btn btn-primary w-100" style="background-color: #2e7d32; border-color: #2e7d32; color: white;">Daftar</button>
                 </form>
 
                 <p class="text-center mt-3">Sudah punya akun? <a href="/login">Login di sini</a></p>

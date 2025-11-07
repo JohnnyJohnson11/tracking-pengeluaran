@@ -16,9 +16,9 @@ class Income extends Model
      */
     protected $fillable = [
         'user_id',
-        'category',
-        'amount',
-        'description',
-        'date',
+        'kategori',
+        'jumlah',
+        'keterangan',
+        'tanggal',
     ];
 }

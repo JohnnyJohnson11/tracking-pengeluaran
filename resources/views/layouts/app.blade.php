@@ -38,6 +38,16 @@
         <li class="nav-item"><a class="nav-link" href="/transactions">Transaksi</a></li>
         <li class="nav-item"><a class="nav-link" href="/reports">Laporan</a></li>
         <li class="nav-item"><a class="nav-link" href="/profile">Profil</a></li>
+        <li class="nav-item">
+          <a href="#" class="nav-link" 
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            Logout
+          </a>
+
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+          </form>
+        </li>
       </ul>
     </div>
   </nav>
