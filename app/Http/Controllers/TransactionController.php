@@ -20,7 +20,9 @@ class TransactionController extends Controller
             return $item;
         });
 
-        $transactions = $incomes->merge($expenses)->sortByDesc('date');
+        $transactions = $incomes->concat($expenses) 
+            ->sortByDesc('date')                    
+            ->values();                              
 
         return view('transaction.transaction-index', [
             'transactions' => $transactions
