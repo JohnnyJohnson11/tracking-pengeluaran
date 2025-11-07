@@ -23,12 +23,12 @@ class DashboardController extends Controller
             ->sum('jumlah');
 
         $totalExpense = Expense::where('user_id', $userId)
-            ->whereMonth('date', $month)
-            ->whereYear('date', $year)
-            ->sum('amount');
+            ->whereMonth('tanggal', $month)
+            ->whereYear('tanggal', $year)
+            ->sum('jumlah');
 
         $totalAllIncome = Income::where('user_id', $userId)->sum('jumlah');
-        $totalAllExpense = Expense::where('user_id', $userId)->sum('amount');
+        $totalAllExpense = Expense::where('user_id', $userId)->sum('jumlah');
         $balance = $totalAllIncome - $totalAllExpense;
 
         $chartData = [];
@@ -45,9 +45,9 @@ class DashboardController extends Controller
                 ->sum('jumlah');
 
             $expense = Expense::where('user_id', $userId)
-                ->whereMonth('date', $chartMonth)
-                ->whereYear('date', $chartYear)
-                ->sum('amount');
+                ->whereMonth('tanggal', $chartMonth)
+                ->whereYear('tanggal', $chartYear)
+                ->sum('jumlah');
 
             $chartData[] = [
                 'month' => $date->format('M Y'),

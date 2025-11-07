@@ -22,17 +22,17 @@
       @else
         @foreach($transactions as $transaction)
           <tr>
-            <td>{{ \Carbon\Carbon::parse($transaction->date)->format('d M Y') }}</td>
+            <td>{{ \Carbon\Carbon::parse($transaction->tanggal)->format('d M Y') }}</td>
             
-            <td>{{ $transaction->category }}</td> 
+            <td>{{ $transaction->kategori }}</td> 
             
             <td>{{ $transaction->jenis }}</td> 
             
             <td class="text-end">
               @if($transaction->jenis == 'Pemasukan')
-                <span class="text-success">+ Rp {{ number_format($transaction->amount, 0, ',', '.') }}</span>
+                <span class="text-success">+ Rp {{ number_format($transaction->jumlah, 0, ',', '.') }}</span>
               @else
-                <span class="text-danger">- Rp {{ number_format($transaction->amount, 0, ',', '.') }}</span>
+                <span class="text-danger">- Rp {{ number_format($transaction->jumlah, 0, ',', '.') }}</span>
               @endif
             </td> 
           </tr>

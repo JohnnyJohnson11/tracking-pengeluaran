@@ -36,7 +36,7 @@
                         <label for="password" class="form-label">Password</label>
                         <input type="password" name="password" class="form-control" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Masuk</button>
+                    <button type="submit" class="btn w-100" style="background-color: #2e7d32; border-color: #2e7d32; color: white;">Masuk</button>
                 </form>
 
                 <p class="text-center mt-3">Belum punya akun? <a href="/register">Daftar di sini</a></p>
