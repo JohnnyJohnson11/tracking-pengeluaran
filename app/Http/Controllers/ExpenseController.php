@@ -3,16 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Expense; // ✅ tambahkan baris ini
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
     public function create()
     {
-        return view('expenses.expenses-create');
+        return view('expenses.create');
     }
 
     public function store(Request $request)
     {
-        // nanti isi logika simpan data
+        $validated = $request->validate([
+            'category' => 'required|string|max:100',
+            'amount' => 'required|numeric|min:0',
+            'date' => 'required|date',
+            'description' => 'nullable|string|max:255',
+        ]);
+
+        $validated['user_id'] = 1; //usernya ganti
+
+        Expense::create($validated);
+
+        return redirect('/')->with('success', 'Pemasukan berhasil ditambahkan!');
     }
 }

@@ -10,16 +10,16 @@ class IncomeController extends Controller
 {
     public function create()
     {
-        return view('incomes.incomes-create');
+        return view('incomes.create');
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'category' => 'required|string|max:100',
-            'amount' => 'required|numeric|min:0',
-            'date' => 'required|date',
-            'description' => 'nullable|string|max:255',
+            'kategori' => 'required|string|max:100',
+            'jumlah' => 'required|numeric|min:0',
+            'tanggal' => 'required|date',
+            'keterangan' => 'nullable|string|max:255',
         ]);
 
         $validated['user_id'] = 1; //usernya ganti
