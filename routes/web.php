@@ -33,16 +33,14 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Pengeluaran
-    Route::get('/expenses/create', [ExpenseController::class, 'create']);
-    Route::post('/expenses', [ExpenseController::class, 'store']);
-
     // Pemasukan
-    Route::get('/incomes/create', [IncomeController::class, 'create']);
-    Route::post('/incomes', [IncomeController::class, 'store']);
+    Route::resource('incomes', IncomeController::class)->except(['index', 'show']);
+
+    // Pengeluaran
+    Route::resource('expenses', ExpenseController::class)->except(['index', 'show']);
 
     // Transaksi
-    Route::get('/transactions', [TransactionController::class, 'index']);
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
 
     // Laporan
     Route::get('/reports', [ReportController::class, 'index']);
