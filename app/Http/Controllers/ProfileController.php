@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Barryvdh\DomPDF\Facade\Pdf; // <- import facade PDF dengan benar
+use App\Models\Income;
+use App\Models\Expense;
 
 class ProfileController extends Controller
 {
@@ -59,7 +61,21 @@ class ProfileController extends Controller
     public function exportCsv()
     {
         $user = Auth::user();
-        $transactions = $user->transactions; // Pastikan relasi User->transactions sudah ada
+        $userId = Auth::id();
+        //$transactions = $user->transactions; // Pastikan relasi User->transactions sudah ada
+        $incomes = Income::where('user_id', $userId)->get()->map(function ($item) {
+            $item->jenis = 'Pemasukan';
+            return $item;
+        });
+
+        $expenses = Expense::where('user_id', $userId)->get()->map(function ($item) {
+            $item->jenis = 'Pengeluaran';
+            return $item;
+        });
+
+        $transactions = $incomes->concat($expenses) 
+            ->sortByDesc('date')                    
+            ->values();    
 
         $filename = "data_{$user->name}.csv";
         $handle = fopen($filename, 'w+');
@@ -67,10 +83,10 @@ class ProfileController extends Controller
 
         foreach ($transactions as $trx) {
             fputcsv($handle, [
-                $trx->date,
-                $trx->category,
-                $trx->amount,
-                $trx->type,
+                $trx->tanggal,
+                $trx->kategori,
+                $trx->jumlah,
+                $trx->jenis,
             ]);
         }
 
@@ -81,8 +97,29 @@ class ProfileController extends Controller
     // Export profil ke PDF
     public function exportPdf()
     {
+        $userId = Auth::id();
+
+        $incomes = Income::where('user_id', $userId)->get()->map(function ($item) {
+            $item->jenis = 'Pemasukan';
+            return $item;
+        });
+
+        $expenses = Expense::where('user_id', $userId)->get()->map(function ($item) {
+            $item->jenis = 'Pengeluaran';
+            return $item;
+        });
+
+        $transactions = $incomes->concat($expenses) 
+            ->sortByDesc('date')                    
+            ->values();                              
+
         $user = Auth::user();
-        $pdf = Pdf::loadView('profile_pdf', compact('user'));
+        $pdf = Pdf::loadView('profile.pdf', [
+            'user' => $user,
+            'transactions' => $transactions
+        ]);
+        
         return $pdf->download('profil_pengguna.pdf');
+        
     }
 }
