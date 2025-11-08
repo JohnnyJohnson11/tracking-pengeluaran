@@ -33,22 +33,20 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Pengeluaran
-    Route::get('/expenses/create', [ExpenseController::class, 'create']);
-    Route::post('/expenses', [ExpenseController::class, 'store']);
-
     // Pemasukan
-    Route::get('/incomes/create', [IncomeController::class, 'create']);
-    Route::post('/incomes', [IncomeController::class, 'store']);
+    Route::resource('incomes', IncomeController::class)->except(['index', 'show']);
+
+    // Pengeluaran
+    Route::resource('expenses', ExpenseController::class)->except(['index', 'show']);
 
     // Transaksi
-    Route::get('/transactions', [TransactionController::class, 'index']);
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
 
     // Laporan
-    Route::get('/reports', [ReportController::class, 'index']);
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports');
 
     // Profil
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+       Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
     Route::get('/profile/export-csv', [ProfileController::class, 'exportCsv'])->name('profile.export.csv');

@@ -37,7 +37,7 @@
         </div>
 
         <button type="submit" class="btn btn-success">Simpan</button>
-        <a href="{{ url('/') }}" class="btn btn-secondary">Batal</a>
+        <a href="{{ route('transactions.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 
 </div>
