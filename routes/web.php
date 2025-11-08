@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
 
     // Laporan
-    Route::get('/reports', [ReportController::class, 'index']);
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports');
 
     // Profil
     Route::get('/profile', [ProfileController::class, 'index']);
