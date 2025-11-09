@@ -11,9 +11,9 @@ use App\Http\Controllers\{
     ProfileController
 };
 
-// =========================
+
 // Auth Routes (Tanpa Login)
-// =========================
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
@@ -24,14 +24,14 @@ Route::middleware('guest')->group(function () {
 // Logout hanya bisa dilakukan oleh user yang login
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
-// Default route → arahkan ke login
+// Default route
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// ===================================
+
 // Protected Routes (Hanya untuk Login)
-// ===================================
+
 Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
