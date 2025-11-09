@@ -97,26 +97,9 @@ class ProfileController extends Controller
     // Export profil ke PDF
     public function exportPdf()
     {
-        $userId = Auth::id();
-
-        $incomes = Income::where('user_id', $userId)->get()->map(function ($item) {
-            $item->jenis = 'Pemasukan';
-            return $item;
-        });
-
-        $expenses = Expense::where('user_id', $userId)->get()->map(function ($item) {
-            $item->jenis = 'Pengeluaran';
-            return $item;
-        });
-
-        $transactions = $incomes->concat($expenses) 
-            ->sortByDesc('date')                    
-            ->values();                              
-
         $user = Auth::user();
         $pdf = Pdf::loadView('profile.pdf', [
             'user' => $user,
-            'transactions' => $transactions
         ]);
         
         return $pdf->download('profil_pengguna.pdf');
