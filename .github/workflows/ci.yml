@@ -19,7 +19,7 @@ jobs:
         with:
           php-version: '8.2'
           extensions: mbstring, intl, bcmath, pdo_sqlite
-          coverage: xdebug
+          coverage: none
 
       - name: Install dependencies
         run: |
@@ -30,29 +30,28 @@ jobs:
           cp .env.example .env
           php artisan key:generate
           php artisan config:clear
-          php artisan cache:clear
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: ":memory:"
+          echo "DB_CONNECTION=sqlite" >> .env
+          echo "DB_DATABASE=/home/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/database/database.sqlite" >> .env
 
       - name: Setup database
-        run: php artisan migrate --force
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+          php artisan migrate --force
         env:
           DB_CONNECTION: sqlite
-          DB_DATABASE: ":memory:"
+          DB_DATABASE: /home/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/database/database.sqlite
 
       - name: Run tests
         run: php artisan test --stop-on-failure
         env:
           APP_ENV: testing
           DB_CONNECTION: sqlite
-          DB_DATABASE: ":memory:"
+          DB_DATABASE: /home/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/database/database.sqlite
 
       - name: Run tests with coverage
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: ":memory:"
+        run: | 
+            vendor/bin/phpunit --coverage-clover=coverage.xml
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@master
