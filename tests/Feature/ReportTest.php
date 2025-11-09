@@ -8,7 +8,7 @@ use App\Models\Income;
 use App\Models\Expense;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ReportControllerTest extends TestCase
+class ReportTest extends TestCase
 {
     use RefreshDatabase;
 
