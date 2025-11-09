@@ -18,8 +18,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: mbstring, intl, bcmath, pdo_mysql
-          coverage: xdebug
+          extensions: mbstring, intl, bcmath, pdo_sqlite
+          coverage: none
 
       - name: Install dependencies
         run: |
@@ -29,6 +29,8 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
+          echo "DB_CONNECTION=sqlite" >> .env
+          echo "DB_DATABASE=database/database.sqlite" >> .env
 
       - name: Setup database
         run: |
