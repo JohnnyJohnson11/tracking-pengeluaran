@@ -1,25 +1,56 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Http\Controllers\ReportController;
+use App\Models\User;
+use App\Models\Income;
+use App\Models\Expense;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\Transaction;
 
-class ReportTest extends TestCase
+class ReportControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function it_returns_correct_nominal_for_pie_graph()
+    public function it_calculates_correct_total_income_expense_and_balance()
     {
-        Transaction::factory()->create(['category' => 'Food', 'amount' => 50000]);
-        Transaction::factory()->create(['category' => 'Transport', 'amount' => 30000]);
-        Transaction::factory()->create(['category' => 'Food', 'amount' => 25000]);
-        $controller = new ReportController();
-        $data = $controller->getPieChartData(); 
-        $this->assertEquals(75000, $data['Food']);
-        $this->assertEquals(30000, $data['Transport']);
+        // Arrange: buat user dummy
+        $user = User::factory()->create();
+
+        // Buat beberapa data income dan expense untuk user tersebut
+        Income::factory()->create([
+            'user_id' => $user->id,
+            'jumlah'  => 100000,
+            'tanggal' => now(),
+        ]);
+
+        Income::factory()->create([
+            'user_id' => $user->id,
+            'jumlah'  => 50000,
+            'tanggal' => now(),
+        ]);
+
+        Expense::factory()->create([
+            'user_id' => $user->id,
+            'jumlah'  => 30000,
+            'tanggal' => now(),
+        ]);
+
+        Expense::factory()->create([
+            'user_id' => $user->id,
+            'jumlah'  => 20000,
+            'tanggal' => now(),
+        ]);
+
+        // Act: login user dan akses halaman laporan
+        $this->actingAs($user);
+        $response = $this->get('/reports'); // pastikan route ini mengarah ke ReportController@index
+
+        // Assert: pastikan view dan datanya benar
+        $response->assertStatus(200);
+        $response->assertViewHas('totalIncome', 150000);
+        $response->assertViewHas('totalExpense', 50000);
+        $response->assertViewHas('balance', 100000);
     }
 }
