@@ -46,7 +46,9 @@ class ReportTest extends TestCase
             'kategori' => 'Laundry',
         ]);
 
+        $this->actingAs($user);
         $response = $this->get('/reports'); 
+
         $response->assertStatus(200);
         $response->assertViewHas('totalIncome', 150000);
         $response->assertViewHas('totalExpense', 50000);
