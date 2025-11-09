@@ -56,10 +56,10 @@ class ProfileController extends Controller
     }
 
     // Export data ke CSV
-    public function exportCsv()
+   public function exportCsv()
     {
         $user = Auth::user();
-        $transactions = $user->transactions; // Pastikan relasi User->transactions sudah ada
+        $transactions = $user->transactions ?? collect(); // ✅ aman dari null
 
         $filename = "data_{$user->name}.csv";
         $handle = fopen($filename, 'w+');
@@ -67,22 +67,22 @@ class ProfileController extends Controller
 
         foreach ($transactions as $trx) {
             fputcsv($handle, [
-                $trx->date,
-                $trx->category,
-                $trx->amount,
-                $trx->type,
+                $trx->date ?? '-',
+                $trx->category ?? '-',
+                $trx->amount ?? '0',
+                $trx->type ?? '-',
             ]);
         }
-
-        fclose($handle);
-        return response()->download($filename)->deleteFileAfterSend(true);
-    }
+    fclose($handle);
+    return response()->download($filename)->deleteFileAfterSend(true);
+    }   
 
     // Export profil ke PDF
     public function exportPdf()
     {
         $user = Auth::user();
-        $pdf = Pdf::loadView('profile_pdf', compact('user'));
+        $pdf = Pdf::loadView('profile.profile_pdf', compact('user'));
         return $pdf->download('profil_pengguna.pdf');
     }
+
 }
