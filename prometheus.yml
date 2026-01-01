@@ -1,0 +1,9 @@
+scrape_configs:
+  - job_name: 'laravel_app'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['host.docker.internal:8000'] 
+
+  - job_name: 'mysql_db'
+    static_configs:
+      - targets: ['host.docker.internal:9104']
