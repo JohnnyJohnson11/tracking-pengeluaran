@@ -8,9 +8,13 @@ use App\Http\Controllers\{
     IncomeController,
     TransactionController,
     ReportController,
-    ProfileController
+    ProfileController,
+    MetricsController
 };
 
+
+// Prometheus
+Route::get('/metrics', [MetricsController::class, 'metrics']);
 
 // Authentikasi
 
